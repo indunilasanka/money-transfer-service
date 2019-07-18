@@ -9,7 +9,7 @@ public interface UserAccountDao {
 
     int createNewUserAccount(Connection connection, UserAccount userAccountDetails);
 
-    void updateUserAccountDetails(Connection connection, UserAccount updatedUserAccountDetails);
+    void updateUserAccountDetails(Connection connection, UserAccount updatedUserAccountDetails, int accountNumber);
 
     void updateUserAccountBalance(Connection connection, int accountNumber, double amount);
 

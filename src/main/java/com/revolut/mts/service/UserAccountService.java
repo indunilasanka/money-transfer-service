@@ -51,13 +51,11 @@ public class UserAccountService {
         return new Status(String.format(SUCCESSFULLY_CREATED_NEW_ACCOUNT, newAccountNumber), NEW_ACCOUNT_CREATED_CODE);
     }
 
-
-    public Status updateExistingUserAccount(UserAccount updatedUserAccount) {
-        getUserAccountDetails(updatedUserAccount.getAccountNumber());
-        userAccountDao.updateUserAccountDetails(DatabaseConnector.getConnection(), updatedUserAccount);
+    public Status updateExistingUserAccount(UserAccount updatedUserAccount, int accountNumber) {
+        getUserAccountDetails(accountNumber);
+        userAccountDao.updateUserAccountDetails(DatabaseConnector.getConnection(), updatedUserAccount, accountNumber);
         return new Status(String.format(SUCCESSFULLY_UPDATED_EXISTING_ACCOUNT, updatedUserAccount.getAccountNumber()), EXISTING_ACCOUNT_UPDATE_CODE);
     }
-
 
     public Status deleteExistingUserAccount(int accountNumber) {
         getUserAccountDetails(accountNumber);

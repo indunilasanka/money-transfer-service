@@ -56,12 +56,12 @@ public class UserAccountDaoImpl implements UserAccountDao {
     }
 
     @Override
-    public void updateUserAccountDetails(Connection connection, UserAccount updatedUserAccountDetails) {
+    public void updateUserAccountDetails(Connection connection, UserAccount updatedUserAccountDetails, int accountNumber) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE user_accounts SET account_holder = ?, balance = ? WHERE account_number = ?");
             statement.setString(1, updatedUserAccountDetails.getAccountHolder());
             statement.setDouble(2, updatedUserAccountDetails.getBalance());
-            statement.setInt(3, updatedUserAccountDetails.getAccountNumber());
+            statement.setInt(3, accountNumber);
             statement.executeUpdate();
 
             statement.close();

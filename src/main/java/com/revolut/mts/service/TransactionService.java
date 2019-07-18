@@ -52,7 +52,7 @@ public class TransactionService {
         if (senderAccount.getBalance() < newTransactionDetails.getAmount()) {
             newTransactionDetails.setStatus(FAILED_STATUS);
             transactionDao.createNewTransaction(DatabaseConnector.getConnection(), newTransactionDetails);
-            LOGGER.error("Transaction failed sue to insufficient credit balance in the sender account");
+            LOGGER.error("Transaction failed due to insufficient credit balance in the sender account");
             throw new TransactionFailureException(String.format(INSUFFICIENT_ACCOUNT_BALANCE, senderAccount.getAccountNumber()));
         } else {
             try {

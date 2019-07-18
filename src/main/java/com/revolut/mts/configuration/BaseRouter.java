@@ -25,7 +25,7 @@ public class BaseRouter extends AbstractVerticle {
         router.get("/user").handler(userAccountController::getAllUserAccounts);
         router.get("/user/:accountNumber").handler(userAccountController::getUserAccount);
         router.post("/user").handler(userAccountController::createNewAccount);
-        router.patch("/user/:accountNumber").handler(userAccountController::updateUserAccount);
+        router.put("/user/:accountNumber").handler(userAccountController::updateUserAccount);
         router.delete("/user/:accountNumber").handler(userAccountController::deleteAccount);
         router.post("/transaction").handler(transactionController::invokeTransaction);
         router.get("/transaction/:transactionId").handler(transactionController::getTransactionDetails);

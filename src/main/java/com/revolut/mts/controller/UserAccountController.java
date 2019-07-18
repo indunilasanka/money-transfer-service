@@ -20,7 +20,6 @@ public class UserAccountController extends BaseController {
                     .setStatusCode(200)
                     .end(Json.encodePrettily(userAccountService.getAllUserAccounts()));
         } catch (Exception e) {
-
             baseExceptionHandler(context, e);
         }
     }
@@ -52,13 +51,13 @@ public class UserAccountController extends BaseController {
 
     public void updateUserAccount(RoutingContext context) {
         try {
+            int accountNumber = Integer.parseInt(context.request().getParam("accountNumber"));
             UserAccount updatedUserAccount = Json.decodeValue(context.getBodyAsString(), UserAccount.class);
             context.response()
                     .putHeader("content-type", "application/json")
                     .setStatusCode(200)
-                    .end(Json.encodePrettily(userAccountService.updateExistingUserAccount(updatedUserAccount)));
+                    .end(Json.encodePrettily(userAccountService.updateExistingUserAccount(updatedUserAccount, accountNumber)));
         } catch (Exception e) {
-
             baseExceptionHandler(context, e);
         }
     }
@@ -71,7 +70,6 @@ public class UserAccountController extends BaseController {
                     .setStatusCode(200)
                     .end(Json.encodePrettily(userAccountService.deleteExistingUserAccount(accountNumber)));
         } catch (Exception e) {
-
             baseExceptionHandler(context, e);
         }
     }
