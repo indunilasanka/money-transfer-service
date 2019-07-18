@@ -16,7 +16,8 @@ A RESTful API for money transfers between users accounts
 * cd /project_location/project_folder
 * ./gradlew shadowJar
 * cd build/libs
-* java -jar MoneyTransferService-1.0.0-all.jar  Application will up and run on port 8000
+* java -jar MoneyTransferService-1.0.0-all.jar  -> Then application will up and run on port 8000
+* ./gradlew test  -> execute unit tests 
 
 
 #### How to test ####
@@ -89,6 +90,3 @@ and add transaction details to the transaction table. This will return the trans
 If you need to visit the transaction details, you have to invoke the following command the with transaction id of the transaction
 
 curl -X GET http://localhost:8000/transaction/1
-
-
-Execute './gradlew test' command to execute unit tests 
