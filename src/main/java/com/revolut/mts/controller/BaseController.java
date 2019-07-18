@@ -13,8 +13,16 @@ import static com.revolut.mts.common.Constants.StatusCodes.TRANSACTION_NOT_FOUND
 import static com.revolut.mts.common.Constants.StatusCodes.UNEXPECTED_ERROR_CODE;
 import static com.revolut.mts.common.Constants.StatusMessages.UNEXPECTED_ERROR_OCCURRED;
 
+/**
+ * Handles base api operations
+ *
+ * @author iasa0862 18/07/19
+ */
 class BaseController {
 
+    /***
+    * Handles exceptions and return user friendly error messages
+    */
     void baseExceptionHandler(RoutingContext context, Exception e) {
         Status errorStatus;
 

@@ -9,6 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Consists the implementations of dao operations related to the initial setup
+ *
+ * @author iasa0862 18/07/19
+ */
 public class InitialSetupDaoImpl implements InitialSetupDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitialSetupDaoImpl.class);

@@ -16,6 +16,11 @@ import java.sql.Statement;
 import static com.revolut.mts.common.Constants.ErrorMessages.CONSTRAINT_VIOLATION_ERROR;
 import static com.revolut.mts.common.Constants.ErrorMessages.INCORRECT_TRANSACTION_AMOUNT;
 
+/**
+ * Consists the implementations of transaction related dao operations
+ *
+ * @author iasa0862 18/07/19
+ */
 public class TransactionDaoImpl implements TransactionDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionDaoImpl.class);

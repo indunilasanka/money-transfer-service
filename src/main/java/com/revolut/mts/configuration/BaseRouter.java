@@ -7,6 +7,11 @@ import io.vertx.core.Future;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 
+/**
+ * Implements the routing functionalists of vertx
+ *
+ * @author iasa0862 18/07/19
+ */
 public class BaseRouter extends AbstractVerticle {
 
     private UserAccountController userAccountController;

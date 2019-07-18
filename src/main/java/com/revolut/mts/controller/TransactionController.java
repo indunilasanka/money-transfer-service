@@ -5,6 +5,11 @@ import com.revolut.mts.service.TransactionService;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
+/**
+ * Interface of transaction related api operations
+ *
+ * @author iasa0862 18/07/19
+ */
 public class TransactionController extends BaseController {
 
     private TransactionService transactionService;

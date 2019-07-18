@@ -1,5 +1,10 @@
 package com.revolut.mts.model;
 
+/**
+ * Holds the user accounts related data
+ *
+ * @author iasa0862 18/07/19
+ */
 public class UserAccount {
 
     private int accountNumber;

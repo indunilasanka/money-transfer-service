@@ -23,6 +23,11 @@ import static com.revolut.mts.common.Constants.StatusCodes.TRANSACTION_SUCCESSFU
 import static com.revolut.mts.common.Constants.StatusMessages.FAILED_STATUS;
 import static com.revolut.mts.common.Constants.StatusMessages.TRANSACTION_SUCCESSFUL;
 
+/**
+ * Handles the business logic of transaction operations
+ *
+ * @author iasa0862 18/07/19
+ */
 public class TransactionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionService.class);
     private TransactionDao transactionDao;

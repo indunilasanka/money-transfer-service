@@ -10,6 +10,11 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Provides database related configurations
+ *
+ * @author iasa0862 18/07/19
+ */
 public class DatabaseConnector {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnector.class);

@@ -8,6 +8,11 @@ import io.vertx.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Handles the basic business logic of the application
+ *
+ * @author iasa0862 18/07/19
+ */
 public class BaseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseService.class);
 

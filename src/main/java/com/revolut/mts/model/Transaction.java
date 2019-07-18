@@ -2,6 +2,11 @@ package com.revolut.mts.model;
 
 import static com.revolut.mts.common.Constants.StatusMessages.SUCCESS_STATUS;
 
+/**
+ * Holds the transactions related data
+ *
+ * @author iasa0862 18/07/19
+ */
 public class Transaction {
 
     private int transactionId;

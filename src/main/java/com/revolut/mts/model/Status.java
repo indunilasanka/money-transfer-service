@@ -1,5 +1,10 @@
 package com.revolut.mts.model;
 
+/**
+ * Holds the status of an api request
+ *
+ * @author iasa0862 18/07/19
+ */
 public class Status {
 
     private String status;

@@ -5,6 +5,11 @@ import com.revolut.mts.model.UserAccount;
 import java.sql.Connection;
 import java.util.List;
 
+/**
+ * Handles dao operations related to the user account api calls
+ *
+ * @author iasa0862 18/07/19
+ */
 public interface UserAccountDao {
 
     int createNewUserAccount(Connection connection, UserAccount userAccountDetails);

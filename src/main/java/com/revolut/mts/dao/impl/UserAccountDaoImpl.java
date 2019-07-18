@@ -18,6 +18,11 @@ import java.util.List;
 import static com.revolut.mts.common.Constants.ErrorMessages.CONSTRAINT_VIOLATION_ERROR;
 import static com.revolut.mts.common.Constants.ErrorMessages.INCORRECT_BALANCE_AMOUNT;
 
+/**
+ * Consists the implementations of user account related dao operations
+ *
+ * @author iasa0862 18/07/19
+ */
 public class UserAccountDaoImpl implements UserAccountDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserAccountDaoImpl.class);

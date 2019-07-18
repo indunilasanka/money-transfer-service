@@ -1,5 +1,10 @@
 package com.revolut.mts.common;
 
+/**
+ * Maintains constants of the application
+ *
+ * @author iasa0862 18/07/19
+ */
 public class Constants {
 
     public static class ErrorMessages {

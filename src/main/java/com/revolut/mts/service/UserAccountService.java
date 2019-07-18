@@ -20,6 +20,11 @@ import static com.revolut.mts.common.Constants.StatusMessages.SUCCESSFULLY_CREAT
 import static com.revolut.mts.common.Constants.StatusMessages.SUCCESSFULLY_DELETED_EXISTING_ACCOUNT;
 import static com.revolut.mts.common.Constants.StatusMessages.SUCCESSFULLY_UPDATED_EXISTING_ACCOUNT;
 
+/**
+ * Handles the business logic of user account operations
+ *
+ * @author iasa0862 18/07/19
+ */
 public class UserAccountService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserAccountService.class);
     private UserAccountDao userAccountDao;

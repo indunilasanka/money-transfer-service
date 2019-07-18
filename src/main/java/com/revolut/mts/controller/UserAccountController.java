@@ -5,6 +5,11 @@ import com.revolut.mts.service.UserAccountService;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
+/**
+ * Interface of user account related api operations
+ *
+ * @author iasa0862 18/07/19
+ */
 public class UserAccountController extends BaseController {
 
     private UserAccountService userAccountService;
