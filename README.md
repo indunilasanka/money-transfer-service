@@ -16,7 +16,7 @@ A RESTful API for money transfers between users accounts
 * cd /project_location/project_folder
 * ./gradlew shadowJar
 * cd build/libs
-* java -jar MoneyTransferService-1.0.0-all.jar - Application will up and run on port 8000
+* java -jar MoneyTransferService-1.0.0-all.jar  Application will up and run on port 8000
 
 
 #### How to test ####
@@ -27,6 +27,7 @@ Application consists of 2 endpoints
 First you have to add some user accounts to the system. You can use user-account endpoint for this
 
 Add account 1
+
 curl -X POST \
   http://localhost:8000/user \
   -H 'Content-Type: application/json' \
@@ -36,6 +37,7 @@ curl -X POST \
 }'
 
 Add account 2
+
 curl -X POST \
   http://localhost:8000/user \
   -H 'Content-Type: application/json' \
@@ -76,9 +78,9 @@ curl -X POST \
 Here you have to provide the account numbers of the sender and the receiver and the transaction amount
 
 At the beginning it will do some validations to check whether and give proper error messages if any validation fails
-    1. Sender and Receiver accounts exists
-    2. Sender's account balance is enough to do the transaction 
-    3. and Transaction amount is positive (>=0)
+    * Sender and Receiver accounts exists
+    * Sender's account balance is enough to do the transaction 
+    * and Transaction amount is positive (>=0)
 
 If all the validations passed, it will do a transactional operation to update the user account of both the sender and receiver
 and add transaction details to the transaction table. This will return the transactionId of the new transaction.
@@ -89,4 +91,4 @@ If you need to visit the transaction details, you have to invoke the following c
 curl -X GET http://localhost:8000/transaction/1
 
 
-* Execute './gradlew test' command to execute unit tests 
+Execute './gradlew test' command to execute unit tests 
