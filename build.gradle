@@ -1,28 +1,52 @@
-plugins {
-    id 'java'
-}
+apply plugin: 'java'
+apply plugin: "com.github.johnrengelman.shadow"
 
 group 'Revolut'
 version '1.0.0'
 
 sourceCompatibility = 1.8
 
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:4.0.4"
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile group: 'io.vertx', name: 'vertx-core', version: '3.7.1'
-    compile group: 'io.vertx', name: 'vertx-web', version: '3.7.1'
+    compile 'io.vertx:vertx-core:3.7.1'
+    compile 'io.vertx:vertx-web:3.7.1'
 
-    compile group: 'com.h2database', name: 'h2', version: '1.4.199'
+    compile 'com.h2database:h2:1.4.199'
     compile 'com.zaxxer:HikariCP:3.3.1'
 
     compile 'org.slf4j:slf4j-api:1.7.6'
     compile 'org.slf4j:slf4j-log4j12:1.7.6'
     compile 'log4j:log4j:1.2.17'
 
-    compile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'io.vertx', name: 'vertx-unit', version: '3.7.1'
-
+    testCompile 'junit:junit:4.12'
+    testCompile 'io.vertx:vertx-unit:3.7.1'
 }
+
+
+
+shadowJar {
+    manifest{
+        attributes(
+                'Main-Class': 'com.revolut.mts.ApplicationInitializer'
+        )
+    }
+    mergeServiceFiles()
+    zip64 true
+}
+
+shadowJar.dependsOn(test)

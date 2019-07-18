@@ -6,6 +6,8 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implements the routing functionalists of vertx
@@ -13,7 +15,7 @@ import io.vertx.ext.web.handler.BodyHandler;
  * @author iasa0862 18/07/19
  */
 public class BaseRouter extends AbstractVerticle {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseRouter.class);
     private UserAccountController userAccountController;
     private TransactionController transactionController;
 
@@ -44,5 +46,7 @@ public class BaseRouter extends AbstractVerticle {
                         future.fail(result.cause());
                     }
                 });
+
+        LOGGER.info("Money transaction service is up and running in the 8000 port");
     }
 }

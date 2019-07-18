@@ -21,8 +21,8 @@ import static com.revolut.mts.common.Constants.StatusMessages.UNEXPECTED_ERROR_O
 class BaseController {
 
     /***
-    * Handles exceptions and return user friendly error messages
-    */
+     * Handles exceptions and return user friendly error messages
+     */
     void baseExceptionHandler(RoutingContext context, Exception e) {
         Status errorStatus;
 
