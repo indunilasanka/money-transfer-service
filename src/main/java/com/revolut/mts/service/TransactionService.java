@@ -41,7 +41,7 @@ public class TransactionService {
     }
 
     public Transaction getTransactionDetails(int transactionId) {
-        Transaction retrievedTransactionDetails = transactionDao.getTransactionDetails(DatabaseConnector.getConnection(), transactionId);
+        Transaction retrievedTransactionDetails = transactionDao.getTransactionDetails(transactionId);
         if (retrievedTransactionDetails == null) {
             LOGGER.error("No transaction details available for the given transaction id");
             throw new TransactionNotFoundException(String.format(TRANSACTION_NOT_FOUND, transactionId));
@@ -56,16 +56,16 @@ public class TransactionService {
 
         if (senderAccount.getBalance() < newTransactionDetails.getAmount()) {
             newTransactionDetails.setStatus(FAILED_STATUS);
-            transactionDao.createNewTransaction(DatabaseConnector.getConnection(), newTransactionDetails);
+            transactionDao.createNewTransaction(newTransactionDetails);
             LOGGER.error("Transaction failed due to insufficient credit balance in the sender account");
             throw new TransactionFailureException(String.format(INSUFFICIENT_ACCOUNT_BALANCE, senderAccount.getAccountNumber()));
         } else {
             try {
                 Connection transactionConnection = DatabaseConnector.getConnection();
                 transactionConnection.setAutoCommit(false);
-                userAccountDao.updateUserAccountBalance(transactionConnection, senderAccount.getAccountNumber(), -newTransactionDetails.getAmount());
-                userAccountDao.updateUserAccountBalance(transactionConnection, receiverAccount.getAccountNumber(), +newTransactionDetails.getAmount());
-                newTransactionId = transactionDao.createNewTransaction(transactionConnection, newTransactionDetails);
+                userAccountDao.updateUserAccountBalance(senderAccount.getAccountNumber(), -newTransactionDetails.getAmount());
+                userAccountDao.updateUserAccountBalance(receiverAccount.getAccountNumber(), +newTransactionDetails.getAmount());
+                newTransactionId = transactionDao.createNewTransaction(newTransactionDetails);
                 transactionConnection.commit();
             } catch (SQLException e) {
                 LOGGER.error("Error occurred when processing the transaction");

@@ -1,6 +1,5 @@
 package com.revolut.mts.service;
 
-import com.revolut.mts.configuration.DatabaseConnector;
 import com.revolut.mts.dao.UserAccountDao;
 import com.revolut.mts.dao.impl.UserAccountDaoImpl;
 import com.revolut.mts.exception.AccountNotFoundException;
@@ -34,7 +33,7 @@ public class UserAccountService {
     }
 
     public List<UserAccount> getAllUserAccounts() {
-        List<UserAccount> userAccounts = userAccountDao.getAllAccountDetails(DatabaseConnector.getConnection());
+        List<UserAccount> userAccounts = userAccountDao.getAllAccountDetails();
         if (userAccounts.isEmpty()) {
             LOGGER.error("No user accounts available");
             throw new AccountNotFoundException(NO_ACCOUNTS);
@@ -43,7 +42,7 @@ public class UserAccountService {
     }
 
     public UserAccount getUserAccountDetails(int accountNumber) {
-        UserAccount retrievedUserAccount = userAccountDao.getUserAccountDetails(DatabaseConnector.getConnection(), accountNumber);
+        UserAccount retrievedUserAccount = userAccountDao.getUserAccountDetails(accountNumber);
         if (retrievedUserAccount == null) {
             LOGGER.error("No user account details available for the given account number");
             throw new AccountNotFoundException(String.format(ACCOUNT_NOT_FOUND, accountNumber));
@@ -52,19 +51,19 @@ public class UserAccountService {
     }
 
     public Status createNewUserAccount(UserAccount newUserAccount) {
-        int newAccountNumber = userAccountDao.createNewUserAccount(DatabaseConnector.getConnection(), newUserAccount);
+        int newAccountNumber = userAccountDao.createNewUserAccount(newUserAccount);
         return new Status(String.format(SUCCESSFULLY_CREATED_NEW_ACCOUNT, newAccountNumber), NEW_ACCOUNT_CREATED_CODE);
     }
 
     public Status updateExistingUserAccount(UserAccount updatedUserAccount, int accountNumber) {
         getUserAccountDetails(accountNumber);
-        userAccountDao.updateUserAccountDetails(DatabaseConnector.getConnection(), updatedUserAccount, accountNumber);
+        userAccountDao.updateUserAccountDetails(updatedUserAccount, accountNumber);
         return new Status(String.format(SUCCESSFULLY_UPDATED_EXISTING_ACCOUNT, updatedUserAccount.getAccountNumber()), EXISTING_ACCOUNT_UPDATE_CODE);
     }
 
     public Status deleteExistingUserAccount(int accountNumber) {
         getUserAccountDetails(accountNumber);
-        userAccountDao.deleteUserAccount(DatabaseConnector.getConnection(), accountNumber);
+        userAccountDao.deleteUserAccount(accountNumber);
         return new Status(String.format(SUCCESSFULLY_DELETED_EXISTING_ACCOUNT, accountNumber), EXISTING_ACCOUNT_DELETE_CODE);
     }
 

@@ -1,7 +1,5 @@
 package com.revolut.mts.dao;
 
-import java.sql.Connection;
-
 /**
  * Handles dao operations related to the initial setup
  *
@@ -9,8 +7,8 @@ import java.sql.Connection;
  */
 public interface InitialSetupDao {
 
-    void createUserAccountTable(Connection connection);
+    void createUserAccountTable();
 
-    void createTransactionTable(Connection connection);
+    void createTransactionTable();
 
 }

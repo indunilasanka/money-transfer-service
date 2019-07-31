@@ -1,5 +1,7 @@
 apply plugin: 'java'
 apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: 'org.sonarqube'
+apply plugin: 'jacoco'
 
 group 'Revolut'
 version '1.0.0'
@@ -15,6 +17,7 @@ buildscript {
     }
     dependencies {
         classpath "com.github.jengelman.gradle.plugins:shadow:4.0.4"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
     }
 }
 
@@ -37,7 +40,16 @@ dependencies {
     testCompile 'io.vertx:vertx-unit:3.7.1'
 }
 
-
+sonarqube {
+    properties {
+        property "sonar.projectName", 'MoneyTransferService'
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.java.binaries", "${buildDir}/classes"
+        property "sonar.java.libraries", "**/*.jar"
+        property "sonar.dynamicAnalysis", "reuseReports"
+        property "sonar.jacoco.reportPaths", "${buildDir}/reports/jacoco/jacoco-sonar/jacoco-coverage.exec"
+    }
+}
 
 shadowJar {
     manifest{

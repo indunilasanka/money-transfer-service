@@ -20,8 +20,8 @@ public class BaseService {
         LOGGER.info("Initializing data sources");
         DatabaseConnector.initializeDataSource();
         InitialSetupDao initialSetupDao = new InitialSetupDaoImpl();
-        initialSetupDao.createUserAccountTable(DatabaseConnector.getConnection());
-        initialSetupDao.createTransactionTable(DatabaseConnector.getConnection());
+        initialSetupDao.createUserAccountTable();
+        initialSetupDao.createTransactionTable();
     }
 
     public void deployVerticleServer() {

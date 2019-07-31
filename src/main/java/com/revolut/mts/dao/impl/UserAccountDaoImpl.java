@@ -1,5 +1,6 @@
 package com.revolut.mts.dao.impl;
 
+import com.revolut.mts.configuration.DatabaseConnector;
 import com.revolut.mts.dao.UserAccountDao;
 import com.revolut.mts.exception.DatabaseException;
 import com.revolut.mts.exception.TransactionFailureException;
@@ -28,25 +29,25 @@ public class UserAccountDaoImpl implements UserAccountDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserAccountDaoImpl.class);
 
     @Override
-    public int createNewUserAccount(Connection connection, UserAccount userAccountDetails) {
+    public int createNewUserAccount(UserAccount userAccountDetails) {
+        String insertQuery = "INSERT INTO user_accounts(account_holder, balance) values (?,?)";
         int newAccountId;
 
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO user_accounts(account_holder, balance) values (?,?)", Statement.RETURN_GENERATED_KEYS);
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, userAccountDetails.getAccountHolder());
             statement.setDouble(2, userAccountDetails.getBalance());
             statement.executeUpdate();
 
-            ResultSet resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                newAccountId = resultSet.getInt(1);
-            } else {
-                LOGGER.error("Error occurred when inserting new user account");
-                throw new DatabaseException("Error occurred when inserting new user account");
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    newAccountId = resultSet.getInt(1);
+                } else {
+                    LOGGER.error("Error occurred when inserting new user account");
+                    throw new DatabaseException("Error occurred when inserting new user account");
+                }
             }
 
-            statement.close();
-            connection.close();
         } catch (SQLException e) {
             if (e.getMessage().contains(CONSTRAINT_VIOLATION_ERROR)) {
                 LOGGER.error("Constraint violation when inserting new user account", e);
@@ -61,18 +62,16 @@ public class UserAccountDaoImpl implements UserAccountDao {
     }
 
     @Override
-    public void updateUserAccountDetails(Connection connection, UserAccount updatedUserAccountDetails, int accountNumber) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE user_accounts SET account_holder = ?, balance = ? WHERE account_number = ?");
+    public void updateUserAccountDetails(UserAccount updatedUserAccountDetails, int accountNumber) {
+        String updateQuery = "UPDATE user_accounts SET account_holder = ?, balance = ? WHERE account_number = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection(); PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setString(1, updatedUserAccountDetails.getAccountHolder());
             statement.setDouble(2, updatedUserAccountDetails.getBalance());
             statement.setInt(3, accountNumber);
             statement.executeUpdate();
 
-            statement.close();
-            connection.close();
         } catch (SQLException e) {
-
             if (e.getMessage().contains(CONSTRAINT_VIOLATION_ERROR)) {
                 LOGGER.error("Constraint violation when updating existing user account", e);
                 throw new TransactionFailureException(INCORRECT_BALANCE_AMOUNT);
@@ -84,16 +83,15 @@ public class UserAccountDaoImpl implements UserAccountDao {
     }
 
     @Override
-    public void updateUserAccountBalance(Connection connection, int accountNumber, double amount) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE user_accounts SET balance = balance + (?) WHERE account_number = ?");
+    public void updateUserAccountBalance(int accountNumber, double amount) {
+        String updateAccBalanceQuery = "UPDATE user_accounts SET balance = balance + (?) WHERE account_number = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection(); PreparedStatement statement = connection.prepareStatement(updateAccBalanceQuery)) {
             statement.setDouble(1, amount);
             statement.setInt(2, accountNumber);
             statement.executeUpdate();
 
-            statement.close();
         } catch (SQLException e) {
-
             if (e.getMessage().contains(CONSTRAINT_VIOLATION_ERROR)) {
                 LOGGER.error("Constraint violation when updating account balance of the existing user account", e);
                 throw new TransactionFailureException(INCORRECT_BALANCE_AMOUNT);
@@ -105,14 +103,12 @@ public class UserAccountDaoImpl implements UserAccountDao {
     }
 
     @Override
-    public void deleteUserAccount(Connection connection, int accountNumber) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM user_accounts WHERE account_number = ?");
+    public void deleteUserAccount(int accountNumber) {
+        String deleteQuery = "DELETE FROM user_accounts WHERE account_number = ?";
+        try (Connection connection = DatabaseConnector.getConnection(); PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
             statement.setInt(1, accountNumber);
             statement.executeUpdate();
 
-            statement.close();
-            connection.close();
         } catch (SQLException e) {
             LOGGER.error("Error occurred when deleting existing user account", e);
             throw new DatabaseException("Error occurred when deleting existing user account");
@@ -120,23 +116,21 @@ public class UserAccountDaoImpl implements UserAccountDao {
     }
 
     @Override
-    public UserAccount getUserAccountDetails(Connection connection, int accountNumber) {
+    public UserAccount getUserAccountDetails(int accountNumber) {
+        String selectQuery = "SELECT account_number,account_holder,balance FROM user_accounts WHERE account_number = ?";
         UserAccount retrievedUserAccount = null;
 
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT account_number,account_holder,balance FROM user_accounts WHERE account_number = ?");
+        try (Connection connection = DatabaseConnector.getConnection(); PreparedStatement statement = connection.prepareStatement(selectQuery)) {
             statement.setInt(1, accountNumber);
-            ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-                retrievedUserAccount = new UserAccount();
-                retrievedUserAccount.setAccountNumber(resultSet.getInt("account_number"));
-                retrievedUserAccount.setAccountHolder(resultSet.getString("account_holder"));
-                retrievedUserAccount.setBalance(resultSet.getDouble("balance"));
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    retrievedUserAccount = new UserAccount();
+                    retrievedUserAccount.setAccountNumber(resultSet.getInt("account_number"));
+                    retrievedUserAccount.setAccountHolder(resultSet.getString("account_holder"));
+                    retrievedUserAccount.setBalance(resultSet.getDouble("balance"));
+                }
             }
-
-            statement.close();
-            connection.close();
         } catch (Exception e) {
             LOGGER.error("Error occurred when retrieving user account details", e);
             throw new DatabaseException("Error occurred when retrieving user account details");
@@ -146,12 +140,13 @@ public class UserAccountDaoImpl implements UserAccountDao {
     }
 
     @Override
-    public List<UserAccount> getAllAccountDetails(Connection connection) {
+    public List<UserAccount> getAllAccountDetails() {
+        String selectAllQuery = "SELECT account_number,account_holder,balance FROM user_accounts";
         List<UserAccount> userAccounts = new ArrayList<>();
 
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT account_number,account_holder,balance FROM user_accounts");
-            ResultSet resultSet = statement.executeQuery();
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(selectAllQuery);
+             ResultSet resultSet = statement.executeQuery();) {
 
             while (resultSet.next()) {
                 UserAccount retrievedUserAccount = new UserAccount();
@@ -161,8 +156,6 @@ public class UserAccountDaoImpl implements UserAccountDao {
                 userAccounts.add(retrievedUserAccount);
             }
 
-            statement.close();
-            connection.close();
         } catch (Exception e) {
             LOGGER.error("Error occurred when retrieving user account details", e);
             throw new DatabaseException("Error occurred when retrieving user account details");

@@ -2,8 +2,6 @@ package com.revolut.mts.dao;
 
 import com.revolut.mts.model.Transaction;
 
-import java.sql.Connection;
-
 /**
  * Handles dao operations related to the transaction api calls
  *
@@ -11,9 +9,9 @@ import java.sql.Connection;
  */
 public interface TransactionDao {
 
-    int createNewTransaction(Connection connection, Transaction transactionDetails);
+    int createNewTransaction(Transaction transactionDetails);
 
-    void updateTransactionStatus(Connection connection, String status, int transactionId);
+    void updateTransactionStatus(String status, int transactionId);
 
-    Transaction getTransactionDetails(Connection connection, int transactionId);
+    Transaction getTransactionDetails(int transactionId);
 }
